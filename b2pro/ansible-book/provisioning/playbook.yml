@@ -1,0 +1,11 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: Install required packages
+      apt: name={{packages}} state=present update_cache=yes
+      vars:
+        packages:
+          - php5-cli
+          - nginx
+          - mysql-server-5.6
