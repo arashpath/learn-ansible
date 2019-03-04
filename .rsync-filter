@@ -1,0 +1,4 @@
+- .git/
+- .vagrant/
+- b2pro/ansible-book
+- b2pro/ansible-roles

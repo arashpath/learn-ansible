@@ -1,9 +1,8 @@
 #!/bin/bash
-VboxServer=192.168.1.100
-DIR="$(dirname $(readlink -f $0))"
-cmd=$1; folder=$(echo $2 | sed 's/\/$//')
+code_src="$(dirname $(readlink -f $0))" # Source Code Location 
+code_srv="archvm:~/lapsync/"            # Virtual Box Location
 
-confirm() {                        # call with a prompt string or use a default
+confirm() {                             # Confirm Befour Sync
     read -r -p "${1:-Continue? [y/N]} " response
     case "$response" in
         [yY][eE][sS]|[yY]) 
@@ -15,16 +14,10 @@ confirm() {                        # call with a prompt string or use a default
     esac
 }
 
-push() {
-    echo "Pushing $1"
-    rsync -azP $DIR/$1 pr@$VboxServer:~/lapsync/ --exclude='.vagrant' --dry-run
-    confirm && rsync -azP $DIR/$1 pr@$VboxServer:~/lapsync/ --exclude='.vagrant'
-}
-
-pull() {
-    echo "Pulling $1"
-    rsync -azP pr@$VboxServer:~/lapsync/$1 $DIR/ --exclude='.vagrant' --dry-run
-    confirm && rsync -azP pr@$VboxServer:~/lapsync/$1 $DIR/ --exclude='.vagrant'
-}
-
-eval $cmd $folder
+if [ "$1" == "pull" ]; then             # set $from and $to
+    DO="Downloading ..."; from=$code_srv; to=$code_src
+else
+    DO="Uploading ...";   from=$code_src; to=$code_srv
+fi
+# Rsync as per '.rsync-filter' after confirmation 
+echo "$DO"; rsync -nazPF $from $to && confirm && rsync -azPF $from $to
