@@ -2,11 +2,11 @@
 - hosts: all
   become: true
   roles:
-    - mheap.php
-    - mheap.nginx
-    - mheap.mysql
     - mheap.wordpress
   
+  #roles:
+    ## added dependencies roles to mheap.wordpress/meta/main.yml
+
   #tasks:
     # PHP
     ## moved tasks to mheap.php/tasks
