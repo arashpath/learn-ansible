@@ -1,108 +1,28 @@
 ---
 - hosts: all
   become: true
-  tasks:
-    - name: Make sure we can connect
-      ping:
-
+  roles:
+    - mheap.php
+    - mheap.nginx
+    - mheap.mysql
+    - mheap.wordpress
+  
+  #tasks:
     # PHP
-    - name: Add the ondrej PHP PPA
-      apt_repository: repo='ppa:ondrej/php'
-    - name: Update the apt cache
-      apt: update_cache=yes cache_valid_time=3600
-    - name: Install PHP
-      apt: name={{PHP}} state=present
-      vars:
-        PHP:
-          - php
-          - php-fpm
-          - php-mysql
-          - php-xml
-    - name: Remove apache2
-      apt: name=apache2 state=absent
+    ## moved tasks to mheap.php/tasks
 
     # MySQL
-    - name: Install MySQL
-      apt: name={{MySQL}} state=present
-      vars:
-        MySQL:
-          - mysql-server-5.6
-          - python-mysqldb
-    - name: Generate new root password
-      command: openssl rand -hex 7 creates=/root/.my.cnf
-      register: mysql_new_root_pass
-    # IF /root/.my.cnf doesn't exist
-    - debug: msg="New root password is {{ mysql_new_root_pass.stdout }}"
-      when: mysql_new_root_pass.changed 
-    # IF /root/.my.cnf exist
-    - debug: msg="No change to root password"
-      when: not mysql_new_root_pass.changed 
-    - name: Remove anonymous users
-      mysql_user: name="" state=absent
-      when: mysql_new_root_pass.changed
-    - name: Remove test database
-      mysql_db: name=test state=absent
-      when: mysql_new_root_pass.changed
-    - name: Update root password
-      mysql_user: name=root host={{item}} password={{mysql_new_root_pass.stdout}}
-      with_items:
-        - "{{ ansible_hostname }}"
-        - 127.0.0.1
-        - ::1
-        - localhost
-      when: mysql_new_root_pass.changed
-    - name: Creat my.cnf
-      template: src=templates/mysql/my.cnf dest=/root/.my.cnf
-      when: mysql_new_root_pass.changed
+    ## moved tasks mheap.mysql/tasks
+    ## moved templates to mheap.mysql/templates
     
     # nginx
-    - name: Install nginx
-      apt: name=nginx state=present
-    - name: Start nginx
-      service: name=nginx state=started
-    - name: Creat nginx config
-      template: src=templates/nginx/default dest=/etc/nginx/sites-available/default
-      notify: restart nginx
-  
-    ## WordPress
-    # Copying already downloaded WordPress ------------------------------------#
-    #- name: Copy wordpress.zip into tmp
-    #  copy: src=files/wordpress.zip dest=/tmp/wordpress.zip
-    # Downloading it Automatically --------------------------------------------#
-    - name: Get WordPress checksum
-      uri: url=https://wordpress.org/latest.zip.sha1 return_content=true
-      register: wp_checksum
-    - name: Download WordPress
-      get_url: 
-        url: https://wordpress.org/latest.zip
-        dest: /tmp/wordpress.zip
-        checksum: "sha1:{{wp_checksum.content}}"
-    #--------------------------------------------------------------------------#
-    - name: installed required tools
-      apt: name=unzip state=present
-    - name: Unzip WordPress
-      unarchive: src=/tmp/wordpress.zip dest=/tmp copy=no creates=/tmp/wordpress/wp-settings.php
-    - name: Create project folder
-      file: dest=/var/www/book.example.com state=directory
-    - name: Copy WordPress files
-      command: cp -a /tmp/wordpress/. /var/www/book.example.com creates=/var/www/book.example.com/wp-settings.php
-    - name: Create WordPress MySQL database
-      mysql_db: name=wordpress state=present
-    - name: Create WordPress MySQL user
-      mysql_user: name=wordpress host=localhost password=bananas priv=wordpress.*:ALL
-    - name: Create wp-config
-      template: src=templates/wordpress/wp-config.php dest=/var/www/book.example.com/wp-config.php
-    - name: Dose the database exist?
-      command: mysql -u root wordpress -e "SELECT ID FROM wordpress.wp_users LIMIT 1;"
-      register: db_exist
-      ignore_errors: true
-      changed_when: false
-    - name: Copy WordPress DB
-      copy: src=files/wp-database.sql dest=/tmp/wp-database.sql
-      when: db_exist.rc > 0
-    - name: Import WordPress DB
-      mysql_db: target=/tmp/wp-database.sql state=import name=wordpress
-      when: db_exist.rc > 0
-  handlers:
-    - name: restart nginx
-      service: name=nginx state=restarted
+    ## moved tasks to mheap.nginx/tasks
+    ## moved templates to mheap.nginx/templates
+    ## moved handlers to mheap.nginx/handlets
+
+    # WordPress
+    ## moved tasks to mheap.wordpress/tasks
+    ## moved templates to mheap.wordpress/templates
+    ## moved files to mheap.wordpress/files
+
+    

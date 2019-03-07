@@ -1,0 +1,10 @@
+---
+# tasks file for mheap.php/php.yml
+- name: Add the ondrej PHP PPA
+  apt_repository: repo='ppa:ondrej/php'
+- name: Update the apt cache
+  apt: update_cache=yes cache_valid_time=3600
+- name: Install PHP
+  apt: name=php state=present
+- name: Remove apache2
+  apt: name=apache2 state=absent

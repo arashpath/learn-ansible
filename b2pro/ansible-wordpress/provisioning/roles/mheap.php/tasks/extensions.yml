@@ -1,0 +1,9 @@
+---
+# tasks file for mheap.php/extensions.yml
+- name: Install PHP Extensions
+  apt: name={{PHP}} state=present
+  vars:
+    PHP:
+      - php-fpm
+      - php-mysql
+      - php-xml

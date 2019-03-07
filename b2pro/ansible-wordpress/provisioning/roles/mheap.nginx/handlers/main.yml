@@ -1,0 +1,4 @@
+---
+# handlers file for mheap.nginx
+- name: restart nginx
+  service: name=nginx state=restarted
