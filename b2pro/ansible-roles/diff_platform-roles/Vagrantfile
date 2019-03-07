@@ -1,0 +1,23 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+Vagrant.configure("2") do |config|
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "512"
+    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+  end
+
+  config.vm.define "debian" do |debian|
+    debian.vm.box = "ubuntu/trusty64"
+  end
+  
+  config.vm.define "redhat" do |redhat|
+    redhat.vm.box = "centos/7"
+  end
+    
+  config.vm.provision "ansible_local" do |ansible|
+    ansible.playbook = "playbook.yml"
+  end
+end

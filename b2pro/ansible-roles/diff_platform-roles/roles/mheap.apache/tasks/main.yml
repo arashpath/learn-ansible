@@ -1,0 +1,11 @@
+---
+# tasks file for mheap.apache
+- include_vars: "{{ ansible_os_family }}.yml"
+- name: Install Apache
+  package: name={{apache2_package_name}} state=present
+
+#- include: install-debian.yml
+#  when: ansible_os_family == 'Debian'
+#
+#- include: install-redhat.yml
+#  when: ansible_os_family == 'RedHat'
