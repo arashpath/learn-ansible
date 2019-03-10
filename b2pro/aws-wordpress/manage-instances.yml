@@ -1,0 +1,19 @@
+---
+# Manage AWS instances for Wordpress
+# ansible-playbook -i ec2.py -u ubuntu --key-file aws-ansible.pem install-wordpress.yml
+- name: Manage AWS resources
+  hosts: all
+  connection: local
+  gather_facts: False
+  tasks:
+    - ec2:
+        image: ami-9abea4fb
+        region: us-west-2
+        instance_type: t2.micro
+        instance_tags:
+          Project: AnsibleWordPress
+        count_tag:
+          Project: AnsibleWordPress
+        exact_count: 0
+        group: ssh-and-http
+        key_name: aws-ansible
