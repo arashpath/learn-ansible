@@ -4,3 +4,5 @@
 - codesync.sh
 - README.md
 - b2pro/ansible-book
+- b2pro/ansible-roles
+- b2pro/ansible-wordpress
