@@ -2,7 +2,15 @@
 - hosts: all
   become: true
   roles:
-    - mheap.wordpress
+    - role: mheap.wordpress
+      database_name: wp_db
+      database_user: wp_user
+      database_password: wp@123
+      wp_domain: book.example.com
+      initial_post_title: Ansible Job Done!
+      initial_post_content: >
+        This is an example post. Change me to Say Something intresting!
+      
   
   #roles:
     ## added dependencies roles to mheap.wordpress/meta/main.yml
