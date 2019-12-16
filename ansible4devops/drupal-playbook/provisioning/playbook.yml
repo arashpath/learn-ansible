@@ -1,0 +1,50 @@
+---
+- hosts: all
+  
+  vars_files:
+  - vars.yml
+
+  pre_tasks:
+  - name: Update apt cache if needed.
+    apt: update_cache=yes cache_valid_time=3600
+
+  handlers:
+  - name: restart apache
+    service: name=apache2 state=restarted
+
+  tasks:
+  - name: Get software for apt repository management.
+    apt: name={{ item }} state=present
+    with_items:
+      - python-apt
+      - python-pycurl
+  
+  - name: Add ondrej repository for later cersion of PHP
+    apt_repository: repo='ppa:ondrej/php5' update_cache=yes
+
+  - name: "Install Apache, MySQL, PHP, and other dependencies"
+    apt: name={{ item }} state=present
+    with_items:
+      - git
+      - curl
+      - sendmail
+      - apache2
+      - php5
+      - php5-common
+      - php5-mysql
+      - php5-cli
+      - php5-curl
+      - php5-gd
+      - php-apc
+      - php-pear
+      - python-mysqldb
+      - mysql-server
+
+  - name: Disable the firewall (since this is for local dev only).
+    service: name=ufw state=stopped
+
+  - name: "Start Apache, MySQL, and PHP."
+    service: "name={{ item }} state=started enabled=yes"
+    with_items:
+      - apache2
+      - mysql
