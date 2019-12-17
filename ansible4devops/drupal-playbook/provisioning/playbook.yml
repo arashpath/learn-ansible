@@ -166,7 +166,8 @@
     file:
       path: "{{ drupal_core_path }}/sites/default/settings.php"
       mode: 0744
-      
+
+  # Not Idempotent when website is opened once.
   - name: Set permissions properly on files directory.
     file:
       path: "{{ drupal_core_path }}/sites/default/files"
