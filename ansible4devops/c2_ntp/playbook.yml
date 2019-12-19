@@ -1,6 +1,6 @@
 ---
 - hosts: all
-  sudo: yes
+  become: yes
   tasks:
   - name: Ensure NTP (for time synchronization) is installed.
     yum: name=ntp state=present
