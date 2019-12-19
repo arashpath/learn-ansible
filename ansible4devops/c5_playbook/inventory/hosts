@@ -1,7 +1,5 @@
 [group]
-host1 admin_user=jane
-host2 admin_user=jack
+host1 
+host2
 host3
-[group:vars]
-admin_user=john
   

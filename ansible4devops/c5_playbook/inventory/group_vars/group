@@ -1,0 +1,3 @@
+---
+# File: /etc/ansible/group_vars/group
+admin_user: john
