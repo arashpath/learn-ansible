@@ -3,7 +3,14 @@
     "description": "Example Express Node.js app.",
     "author": "Jeff Geerling <geerlingguy@mac.com>",
     "dependencies": {
+<<<<<<< HEAD
+        "express": "3.x.x"
+    },
+    "engine": "node >= 0.10.6"
+}
+=======
         "express": ">=3.11.0"
     },
     "engine": "node >= 0.10.6"
 }
+>>>>>>> master

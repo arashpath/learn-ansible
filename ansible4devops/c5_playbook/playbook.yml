@@ -4,3 +4,5 @@
   tasks:
   - name: Check Variables
     debug: var=admin_user
+  - name: Check Magic Variable
+    debug: var=hostvars.host1.admin_user
