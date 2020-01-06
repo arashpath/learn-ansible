@@ -1,3 +1,2 @@
-Ansible for DevOps - Chapter 4: Ansible Playbook
-  - Real-world playbook: Ubuntu LAMP server with Drupal
-  - Real-world playbook: Ubuntu Apache Tomcat server with Solr
+Ansible for DevOps - Chapter 6 - Playbook Organization - Roles and Includes
+  - Includes
